@@ -16,7 +16,7 @@ class ArraySegment<A> {
 
     slice(from: number, to: number) {
         // todo bounds check
-        return new ArraySegment(this.#backingArray, from, this.#backingArray.length - 1)
+        return new ArraySegment(this.#backingArray, from, to);
     }
 
     sliceUpTo(to: number) {
@@ -48,15 +48,26 @@ class ArraySegment<A> {
     }
 }
 
-export function segmentOf<A>(
-    array: Array<A>, 
-    from: number = 0, 
-    to: number | null = null
-): ArraySegment<A> {
-    return new ArraySegment(
-        array, 
-        from, 
-        to === null 
-            ? array.length - 1 
-            : to);
+class SegmentBuilder<A> {
+    array: Array<A>;
+
+    constructor(array: Array<A>) {
+        this.array = array;
+    }
+
+    full(): ArraySegment<A> {
+        return new ArraySegment(this.array, 0, this.array.length - 1);
+    }
+
+    from(from: number): ArraySegment<A> {
+        return new ArraySegment(this.array, from, this.array.length - 1);
+    }
+
+    to(to: number): ArraySegment<A> {
+        return new ArraySegment(this.array, 0, to);
+    }
+}
+
+export function segmentOf<A>(array: Array<A>): SegmentBuilder<A> {
+    return new SegmentBuilder(array);
 }
