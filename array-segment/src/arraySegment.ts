@@ -1,30 +1,50 @@
 
 class ArraySegment<A> {
 
-    array: Array<A>;
-    from: number;
-    to: number;
+    #backingArray: Array<A>;
+    #from: number;
+    #to: number;
+    length: number;
 
-    constructor(array: Array<A>, from: number, to: number) {
-        this.array = array;
-        this.from = from;
-        this.to = to;
+    // from and to are inclusive for now
+    constructor(backingArray: Array<A>, from: number, to: number) {
+        this.#backingArray = backingArray;
+        this.#from = from;
+        this.#to = to;
+        this.length = to - from + 1;
     }
 
-    slice(from: number, to: number | null = null) {
-        if (to === null) {
-            return new ArraySegment(this.array, )
+    slice(from: number, to: number) {
+        // todo bounds check
+        return new ArraySegment(this.#backingArray, from, this.#backingArray.length - 1)
+    }
+
+    sliceUpTo(to: number) {
+        // todo bounds check
+        return new ArraySegment(this.#backingArray, this.#from, to);
+    }
+
+    sliceFrom(from: number) {
+        // todo bounds check
+        return new ArraySegment(this.#backingArray, from, this.#to);
+    }
+
+    *[Symbol.iterator]() {
+        for (let i = this.#from; i < this.#to; i++) {
+            yield this.#backingArray[i];
         }
     }
 
-    sliceEnd(to: number) {
-        // todo bounds check
-        return new ArraySegment(this.array, this.from, to);
+    values() {
+        return this[Symbol.iterator]();
     }
 
-    sliceFront(from: number) {
-        // todo bounds check
-        return new ArraySegment(this.array, from, this.to);
+    get(index: number): A | undefined {
+        if (this.#from + index > this.#backingArray.length) {
+            return undefined;
+        }
+
+        return this.#backingArray[this.#from + index];
     }
 }
 
