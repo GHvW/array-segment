@@ -15,22 +15,22 @@ class ArraySegment<A> {
     }
 
     slice(from: number, to: number) {
-        // todo bounds check
+        // todo - bounds check
         return new ArraySegment(this.#backingArray, from, to);
     }
 
     sliceUpTo(to: number) {
-        // todo bounds check
+        // todo - bounds check
         return new ArraySegment(this.#backingArray, this.#from, to);
     }
 
     sliceFrom(from: number) {
-        // todo bounds check
+        // todo - bounds check
         return new ArraySegment(this.#backingArray, from, this.#to);
     }
 
     *[Symbol.iterator]() {
-        for (let i = this.#from; i < this.#to; i++) {
+        for (let i = this.#from; i <= this.#to; i++) {
             yield this.#backingArray[i];
         }
     }
@@ -39,7 +39,8 @@ class ArraySegment<A> {
         return this[Symbol.iterator]();
     }
 
-    get(index: number): A | undefined {
+    at(index: number): A | undefined {
+        // todo - handle negative indexes
         if (this.#from + index > this.#backingArray.length) {
             return undefined;
         }
