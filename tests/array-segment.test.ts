@@ -36,7 +36,19 @@ describe("given a backing array", () => {
         });
 
         test("when using an index that is out of bounds", () => {
-            expect(segment.at(backingArray.length - 1)).toBeUndefined();
+            expect(segment.at(4)).toBeUndefined();
+        });
+
+        test("when using a netgative index that is out of bounds", () => {
+            expect(segment.at(-5)).toBeUndefined();
+        });
+
+        test("when using a netgative index to get the last item", () => {
+            expect(segment.at(-1)).toBe(5);
+        });
+
+        test("when using a netgative index to get the first item", () => {
+            expect(segment.at(-4)).toBe(2);
         });
 
         test("when getting the length", () => {
@@ -60,7 +72,19 @@ describe("given a backing array", () => {
         });
 
         test("when using an index that is out of bounds", () => {
-            expect(segment.at(backingArray.length)).toBeUndefined();
+            expect(segment.at(4)).toBeUndefined();
+        });
+
+        test("when using a netgative index that is out of bounds", () => {
+            expect(segment.at(-5)).toBeUndefined();
+        });
+
+        test("when using a netgative index to get the last item", () => {
+            expect(segment.at(-1)).toBe(4);
+        });
+
+        test("when using a netgative index to get the first item", () => {
+            expect(segment.at(-4)).toBe(1);
         });
 
         test("when getting the length", () => {

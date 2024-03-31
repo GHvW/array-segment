@@ -40,9 +40,12 @@ class ArraySegment<A> {
     }
 
     at(index: number): A | undefined {
-        // todo - handle negative indexes
-        if (this.#from + index > this.#backingArray.length) {
+        if (index >= this.length || (index < 0 && (Math.abs(index) > this.length))) {
             return undefined;
+        }
+
+        if (index < 0) {
+            return this.#backingArray[this.#from + this.length + index];
         }
 
         return this.#backingArray[this.#from + index];
